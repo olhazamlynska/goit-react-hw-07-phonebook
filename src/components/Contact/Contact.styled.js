@@ -2,21 +2,26 @@ import styled from 'styled-components';
 
 export const ContactsItem = styled.li`
   display: flex;
-  justify-content: space-between;
-  width: 400px;
+  width: 500px;
   height: 40px;
   margin-bottom: ${p => p.theme.space[2]}px;
 `;
 
 export const ContactsName = styled.span`
-  margin-right: ${p => p.theme.space[3]}px;
+  margin-left: 0;
   color: ${p => p.theme.colors.accentColor};
 `;
 
+export const ContactsPhone = styled.span`
+  flex-grow: 1;
+  text-align: right;
+  margin-left: ${p => p.theme.space[2]}px;
+  color: ${p => p.theme.colors.accentColor};
+`;
 export const DeleteBtn = styled.button`
-  width: 100px;
   height: 30px;
-  margin-left: ${p => p.theme.space[3]}px;
+
+  margin-left: ${p => p.theme.space[4]}px;
   cursor: pointer;
   border: none;
   border-radius: ${p => p.theme.radii.normal};

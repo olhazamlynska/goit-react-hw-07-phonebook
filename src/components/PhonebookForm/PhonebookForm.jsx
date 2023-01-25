@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Notify } from 'notiflix';
-import { addContact } from 'redux/contactsSlice';
-import { getContacts } from 'redux/selectors';
+
+import { selectContacts } from 'redux/selectors';
 import {
   AllForm,
   Label,
   Input,
   AddBtn,
 } from 'components/PhonebookForm/PhonebookForm.styled';
+import { addContact } from 'redux/operations';
 
 export function PhonebookForm() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-  const contacts = useSelector(getContacts);
+  const [phone, setPhone] = useState('');
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -23,15 +24,13 @@ export function PhonebookForm() {
       case 'name':
         setName(value);
         break;
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
-
       default:
-        break;
+        Notify.failure('Try again!');
     }
   };
-
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -39,20 +38,23 @@ export function PhonebookForm() {
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
 
-    const isAddedNunber = contacts.some(contact => contact.number === number);
+    const isAddedNunber = contacts.some(contact => contact.phone === phone);
 
     if (isAddedName) {
       Notify.failure(`We have already had contact with name ${name}`);
       return false;
     } else if (isAddedNunber) {
-      Notify.failure(`We have already had contact with number ${number}`);
+      Notify.failure(`We have already had contact with number ${phone}`);
       return false;
     }
 
-    const form = e.target.elements;
-    dispatch(addContact(form.name.value, form.number.value));
+    dispatch(addContact({ name, phone }))
+      .unwrap()
+      .then(() => Notify.success('You add contact!'))
+      .catch(() => Notify.failure('Something went wrong...Try again!'));
+
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -70,12 +72,12 @@ export function PhonebookForm() {
           onChange={handleChange}
         />
       </Label>
-      <Label htmlFor="number">
+      <Label htmlFor="phone">
         Number
         <Input
           type="tel"
-          name="number"
-          value={number}
+          name="phone"
+          value={phone}
           placeholder="111-11-11"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
