@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectContacts, selectIsLoading } from 'redux/selectors';
+import { selectIsLoading, selectVisibleContacts } from 'redux/selectors';
 import { Contact } from 'components/Contact/Contact';
 import {
   ContactsListSTyle,
@@ -7,7 +7,7 @@ import {
 } from 'components/ContactsList/ContactsList.styled';
 
 export const ContactsList = () => {
-  const contacts = useSelector(selectContacts);
+  const contacts = useSelector(selectVisibleContacts);
   const isLoading = useSelector(selectIsLoading);
 
   return (

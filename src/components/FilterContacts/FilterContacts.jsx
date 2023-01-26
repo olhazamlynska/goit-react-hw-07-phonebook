@@ -14,10 +14,6 @@ export const FilterContacts = () => {
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
 
-  const onChangeFilter = e => {
-    dispatch(setFilterContacts(e.target.value));
-  };
-
   return (
     <Wrapper>
       <Label htmlFor={filterId}>
@@ -25,7 +21,7 @@ export const FilterContacts = () => {
           type="text"
           title="Write name to find contact quickly"
           value={filter}
-          onChange={onChangeFilter}
+          onChange={e => dispatch(setFilterContacts(e.target.value))}
           id={filterId}
         ></Input>
       </Label>
